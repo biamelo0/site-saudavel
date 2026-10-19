@@ -380,20 +380,37 @@ export default function Home() {
       <header className="border-b border-zinc-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Logótipo Minimalista & Moderno */}
-          <a href="#home" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-9 h-9 rounded-xl bg-[#1b4332] group-hover:bg-[#3a7d44] transition-colors flex items-center justify-center shrink-0">
-              <Leaf className="w-4 h-4 text-[#f4a51c] stroke-[2.4]" />
+          <a href="#home" className="flex items-center gap-3 group shrink-0">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1b4332] to-[#3a7d44] flex items-center justify-center shadow-sm group-hover:shadow-md transition-all shrink-0">
+              <svg viewBox="0 0 28 28" fill="none" className="w-5 h-5">
+                {/* Arco do sol minimalista */}
+                <path
+                  d="M8 13.5C8 10.1863 10.6863 7.5 14 7.5C17.3137 7.5 20 10.1863 20 13.5"
+                  stroke="#f4a51c"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                />
+                {/* Tigela geométrica limpa */}
+                <path
+                  d="M5.5 16H22.5C22.5 20.1421 18.6944 23.5 14 23.5C9.30558 23.5 5.5 20.1421 5.5 16Z"
+                  stroke="white"
+                  strokeWidth="2.2"
+                  strokeLinejoin="round"
+                />
+                {/* Folha brotando no topo */}
+                <path
+                  d="M14 7.5C14 4.8 16.5 3.5 18.5 4C18.5 6.2 16.5 7.5 14 7.5Z"
+                  fill="#f4a51c"
+                />
+              </svg>
             </div>
 
             <div className="whitespace-nowrap flex flex-col">
-              <div className="flex items-center gap-0.5">
-                <span className="text-xl font-extrabold tracking-tight text-[#1b4332] leading-none">
-                  sunneen
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#f4a51c]" />
-              </div>
-              <span className="text-[8.5px] uppercase font-bold tracking-[0.22em] text-zinc-400 leading-none mt-1">
-                alimentos saudáveis
+              <span className="text-[21px] font-black tracking-tight text-[#1b4332] leading-none">
+                Sunneen<span className="text-[#e08e24]">.</span>
+              </span>
+              <span className="text-[9px] uppercase font-bold tracking-[0.2em] text-[#3a7d44] leading-none mt-1">
+                Alimentos Saudáveis
               </span>
             </div>
           </a>
@@ -496,24 +513,46 @@ export default function Home() {
               Preparamos diariamente refeições frescas, tigelas nutritivas e wraps artesanais com ingredientes colhidos no auge do sabor — sem transgênicos e prontos para acompanhar a sua rotina.
             </p>
 
-            <div className="inline-flex items-center gap-3 bg-[#e08e24] text-white px-5 py-2.5 rounded-sm shadow-md text-xs font-semibold uppercase tracking-wider">
-              <span className="bg-white/20 px-2 py-0.5 rounded font-black text-xs">3 NOVOS</span>
-              <span>Tigelas Deli de 300g</span>
+            {/* Card de Destaque: 3 Novos Sabores */}
+            <div className="bg-white/90 backdrop-blur-sm border border-zinc-200/80 rounded-2xl p-3.5 shadow-sm max-w-md flex items-center gap-3.5">
+              <div className="bg-gradient-to-br from-[#f4a51c] to-[#e08e24] text-white rounded-xl px-3 py-2 text-center shrink-0 shadow-xs">
+                <span className="block text-base font-black leading-none">3</span>
+                <span className="block text-[9px] font-extrabold uppercase tracking-wider mt-0.5">
+                  Novos
+                </span>
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-black uppercase tracking-wide text-[#1b4332]">
+                    Tigelas Deli de 300g
+                  </span>
+                  <span className="text-[10px] font-bold bg-emerald-100 text-[#3a7d44] px-2 py-0.5 rounded-full">
+                    Prontas
+                  </span>
+                </div>
+                <p className="text-[11px] text-zinc-500 truncate mt-0.5">
+                  Quinoa Mediterrânea, Bowl Detox & Poke de Salmão
+                </p>
+              </div>
             </div>
 
+            {/* Botões de Ação Principais */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#products"
-                className="px-6 py-3 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded transition-all shadow hover:shadow-md inline-flex items-center gap-2"
+                className="pl-6 pr-2.5 py-2.5 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center gap-3 group"
               >
-                Explorar Cardápio
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Explorar Cardápio</span>
+                <span className="w-7 h-7 rounded-full bg-[#f4a51c] text-[#1b4332] flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                </span>
               </a>
               <a
                 href="#where-to-buy"
-                className="px-6 py-3 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 text-xs font-bold uppercase tracking-wider rounded transition-all shadow-sm"
+                className="px-5 py-3 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 hover:border-[#3a7d44] text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
               >
-                Onde Encontrar
+                <MapPin className="w-3.5 h-3.5 text-[#3a7d44]" />
+                <span>Onde Encontrar</span>
               </a>
             </div>
           </div>
