@@ -26,6 +26,7 @@ import {
   Sprout,
   ShoppingBag,
   Salad,
+  PhoneCall,
 } from "lucide-react";
 
 function Facebook(props: React.SVGProps<SVGSVGElement>) {
@@ -69,36 +70,42 @@ const INGREDIENT_DETAILS = [
     name: "Alface Romana",
     desc: "Colhida diariamente em fazendas parceiras locais, garantindo crocância máxima e folhas ricas em vitaminas A, C e K.",
     badge: "Colheita Diária",
+    origin: "Fazendas Orgânicas Locais",
     stats: { carb: "3g", fiber: "3g", cal: "50", vitC: "8%", vitA: "20%", iron: "2%" },
   },
   {
     name: "Tomate Fresco",
     desc: "Tomates amadurecidos naturalmente ao sol, ricos em licopeno e antioxidantes que realçam o frescor de cada mordida.",
     badge: "Rico em Licopeno",
+    origin: "Cultivo Sustentável",
     stats: { carb: "4g", fiber: "2g", cal: "35", vitC: "25%", vitA: "15%", iron: "3%" },
   },
   {
     name: "Pão Folha Integral",
     desc: "Massa fina artesanal feita com grãos 100% integrais moídos na pedra, oferecendo energia de absorção lenta e alto teor de fibras.",
     badge: "100% Grãos Integrais",
+    origin: "Padaria Artesanal Sunneen",
     stats: { carb: "18g", fiber: "5g", cal: "110", vitC: "0%", vitA: "2%", iron: "8%" },
   },
   {
     name: "Molho Chipotle",
     desc: "Receita exclusiva da casa preparada com pimentas defumadas, azeite extravirgem e especiarias naturais sem conservantes.",
     badge: "Receita Exclusiva",
+    origin: "Sem Aditivos Químicos",
     stats: { carb: "2g", fiber: "1g", cal: "65", vitC: "6%", vitA: "10%", iron: "1%" },
   },
   {
     name: "Bacon Defumado",
     desc: "Cortes selecionados defumados lentamente em madeira de macieira, sem nitritos artificiais, trazendo sabor intenso e equilibrado.",
-    badge: "Sem Nitritos Artificiais",
+    badge: "Defumação Natural",
+    origin: "Livre de Nitritos Artificiais",
     stats: { carb: "0g", fiber: "0g", cal: "90", vitC: "0%", vitA: "0%", iron: "4%" },
   },
   {
-    name: "Sem Lactose",
+    name: "Abacate & Sem Lactose",
     desc: "Cremosidade garantida pelo abacate Hass maduro e molhos vegetais, perfeito para intolerantes à lactose sem abrir mão do sabor.",
     badge: "100% Livre de Laticínios",
+    origin: "Gorduras Boas Naturais",
     stats: { carb: "6g", fiber: "5g", cal: "120", vitC: "12%", vitA: "8%", iron: "4%" },
   },
 ];
@@ -315,6 +322,7 @@ const FAQS = [
 export default function Home() {
   const [selectedIngredient, setSelectedIngredient] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [showAllProducts, setShowAllProducts] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(GOALS[0]);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -344,6 +352,11 @@ export default function Home() {
       ? PRODUCTS
       : PRODUCTS.filter((p) => p.category === selectedCategory);
 
+  const visibleProducts =
+    selectedCategory === "Todos" && !showAllProducts
+      ? filteredProducts.slice(0, 8)
+      : filteredProducts;
+
   const currentIng = INGREDIENT_DETAILS[selectedIngredient];
 
   const handleNewsletter = (e: React.FormEvent) => {
@@ -355,10 +368,10 @@ export default function Home() {
   };
 
   return (
-    <div id="home" className="min-h-screen bg-white text-zinc-800 font-sans antialiased selection:bg-[#f4a51c] selection:text-white">
+    <div id="home" className="min-h-screen bg-[#faf9f5] text-zinc-800 font-sans antialiased selection:bg-[#f4a51c] selection:text-white">
       {/* BARRA SUPERIOR DE ANÚNCIO */}
-      <div className="bg-gradient-to-r from-[#123826] via-[#1b4332] to-[#123826] text-emerald-50 text-[11px] py-2 px-4 border-b border-emerald-800/50">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center">
+      <div className="bg-gradient-to-r from-[#123826] via-[#1b4332] to-[#123826] text-emerald-50 text-xs py-2.5 px-4 border-b border-emerald-800/50">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center">
           <span className="inline-flex items-center gap-1 bg-[#f4a51c] text-[#1b4332] font-black uppercase tracking-wider text-[10px] px-2.5 py-0.5 rounded-full shadow-xs">
             <Leaf className="w-3 h-3 fill-current" />
             Novidade
@@ -368,10 +381,10 @@ export default function Home() {
           </p>
           <a
             href="#products"
-            className="hidden sm:inline-flex items-center gap-1 text-[#f4a51c] hover:text-amber-300 font-bold uppercase tracking-wider text-[10px] underline underline-offset-4 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1 text-[#f4a51c] hover:text-amber-300 font-bold uppercase tracking-wider text-[11px] underline underline-offset-4 transition-colors"
           >
             Ver Sabores
-            <ArrowRight className="w-3 h-3" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </div>
       </div>
@@ -383,21 +396,18 @@ export default function Home() {
           <a href="#home" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1b4332] to-[#3a7d44] flex items-center justify-center shadow-sm group-hover:shadow-md transition-all shrink-0">
               <svg viewBox="0 0 28 28" fill="none" className="w-5 h-5">
-                {/* Arco do sol minimalista */}
                 <path
                   d="M8 13.5C8 10.1863 10.6863 7.5 14 7.5C17.3137 7.5 20 10.1863 20 13.5"
                   stroke="#f4a51c"
                   strokeWidth="2.2"
                   strokeLinecap="round"
                 />
-                {/* Tigela geométrica limpa */}
                 <path
                   d="M5.5 16H22.5C22.5 20.1421 18.6944 23.5 14 23.5C9.30558 23.5 5.5 20.1421 5.5 16Z"
                   stroke="white"
                   strokeWidth="2.2"
                   strokeLinejoin="round"
                 />
-                {/* Folha brotando no topo */}
                 <path
                   d="M14 7.5C14 4.8 16.5 3.5 18.5 4C18.5 6.2 16.5 7.5 14 7.5Z"
                   fill="#f4a51c"
@@ -491,65 +501,45 @@ export default function Home() {
         )}
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative bg-[#ebe6dc] overflow-hidden py-16 md:py-24 border-b border-zinc-200">
-        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
-          <div className="z-10 space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur px-3.5 py-1.5 rounded-full text-[11px] font-bold text-[#1b4332] shadow-sm border border-emerald-900/10">
-              <Sparkles className="w-3.5 h-3.5 text-[#e08e24]" />
-              <span>Alimentação Consciente, Prática e 100% Natural</span>
+      {/* 2. HERO SECTION (EQUILIBRADO, LIMPO & ELEGANTE) */}
+      <section className="relative bg-gradient-to-b from-[#ebe6dc] to-[#f4f1ea] overflow-hidden pt-12 pb-20 md:pt-16 md:pb-24 border-b border-zinc-200/80">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 grid md:grid-cols-12 gap-10 items-center relative z-10">
+          <div className="md:col-span-7 space-y-5">
+            {/* Selo elegante de lançamento */}
+            <div className="inline-flex items-center gap-2.5 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full shadow-xs border border-zinc-200/80">
+              <span className="bg-[#e08e24] text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                3 Novos
+              </span>
+              <span className="text-xs font-bold text-[#1b4332]">
+                Tigelas Deli de 300g • Prontas para levar
+              </span>
             </div>
 
             <div className="space-y-1">
-              <span className="text-2xl md:text-3xl font-serif italic text-[#3a7d44] tracking-wide block">
+              <span className="text-2xl sm:text-3xl font-serif italic text-[#3a7d44] block">
                 Difícil de pronunciar,
               </span>
-              <h1 className="text-5xl md:text-6xl font-black uppercase text-[#1b4332] tracking-tight leading-none">
-                Fácil de amar.
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase text-[#1b4332] tracking-tight leading-none">
+                Fácil de <span className="text-[#3a7d44]">amar.</span>
               </h1>
             </div>
 
-            <p className="text-sm text-zinc-600 max-w-md leading-relaxed">
-              Preparamos diariamente refeições frescas, tigelas nutritivas e wraps artesanais com ingredientes colhidos no auge do sabor — sem transgênicos e prontos para acompanhar a sua rotina.
+            <p className="text-sm sm:text-base text-zinc-600 max-w-lg leading-relaxed">
+              Preparamos diariamente refeições frescas, tigelas nutritivas e wraps artesanais com ingredientes colhidos no auge do sabor — 100% livres de transgênicos e prontos para a sua rotina.
             </p>
-
-            {/* Card de Destaque: 3 Novos Sabores */}
-            <div className="bg-white/90 backdrop-blur-sm border border-zinc-200/80 rounded-2xl p-3.5 shadow-sm max-w-md flex items-center gap-3.5">
-              <div className="bg-gradient-to-br from-[#f4a51c] to-[#e08e24] text-white rounded-xl px-3 py-2 text-center shrink-0 shadow-xs">
-                <span className="block text-base font-black leading-none">3</span>
-                <span className="block text-[9px] font-extrabold uppercase tracking-wider mt-0.5">
-                  Novos
-                </span>
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-black uppercase tracking-wide text-[#1b4332]">
-                    Tigelas Deli de 300g
-                  </span>
-                  <span className="text-[10px] font-bold bg-emerald-100 text-[#3a7d44] px-2 py-0.5 rounded-full">
-                    Prontas
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 truncate mt-0.5">
-                  Quinoa Mediterrânea, Bowl Detox & Poke de Salmão
-                </p>
-              </div>
-            </div>
 
             {/* Botões de Ação Principais */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href="#products"
-                className="pl-6 pr-2.5 py-2.5 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center gap-3 group"
+                className="px-6 py-3 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2.5 group"
               >
                 <span>Explorar Cardápio</span>
-                <span className="w-7 h-7 rounded-full bg-[#f4a51c] text-[#1b4332] flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
-                </span>
+                <ArrowRight className="w-4 h-4 text-[#f4a51c] group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
                 href="#where-to-buy"
-                className="px-5 py-3 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 hover:border-[#3a7d44] text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
+                className="px-6 py-3 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 hover:border-[#3a7d44] text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
               >
                 <MapPin className="w-3.5 h-3.5 text-[#3a7d44]" />
                 <span>Onde Encontrar</span>
@@ -557,125 +547,97 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative flex justify-center">
-            <div className="w-72 h-72 sm:w-88 sm:h-88 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-white shadow-2xl relative">
-              <Image
-                src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80"
-                alt="Tigela com salada fresca"
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover"
-                priority
-              />
-            </div>
+          {/* Composição Visual da Tigela Hero */}
+          <div className="md:col-span-5 relative flex justify-center">
+            <div className="relative w-72 h-72 sm:w-84 sm:h-84 lg:w-92 lg:h-92">
+              <div className="w-full h-full rounded-full overflow-hidden border-8 border-white shadow-2xl relative">
+                <Image
+                  src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=900&q=80"
+                  alt="Tigela com salada fresca"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
 
-            {/* Selos flutuantes decorativos */}
-            <div className="hidden sm:flex items-center gap-2.5 bg-white px-4 py-2.5 rounded-xl shadow-lg border border-zinc-100 absolute -bottom-3 left-4 md:left-8">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-[#3a7d44] flex items-center justify-center">
-                <Leaf className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="block text-[11px] font-black text-[#1b4332] uppercase">100% Orgânico & Fresco</span>
-                <span className="block text-[10px] text-zinc-500">Direto do produtor local</span>
-              </div>
-            </div>
-
-            <div className="hidden sm:flex items-center gap-2.5 bg-white px-4 py-2.5 rounded-xl shadow-lg border border-zinc-100 absolute top-4 right-2 md:right-4">
-              <div className="w-8 h-8 rounded-full bg-amber-100 text-[#e08e24] flex items-center justify-center">
-                <Flame className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="block text-[11px] font-black text-[#1b4332] uppercase">Baixa Caloria</span>
-                <span className="block text-[10px] text-zinc-500">Alto teor de fibras e nutrientes</span>
+              {/* Único selo flutuante discreto */}
+              <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur px-3.5 py-2 rounded-full shadow-lg border border-zinc-100 absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                <span className="w-6 h-6 rounded-full bg-emerald-100 text-[#3a7d44] flex items-center justify-center">
+                  <Leaf className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[11px] font-extrabold text-[#1b4332] uppercase tracking-wide">
+                  100% Orgânico & Fresco
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAIXA DE ESTATÍSTICAS RÁPIDAS */}
-      <section className="relative z-20 -mt-8 pb-6 px-4">
-        <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg border border-zinc-200/80 p-6 md:p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-zinc-200/80">
-            <div className="flex items-center gap-4 lg:px-6 first:lg:pl-2">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-900/10 text-[#3a7d44] flex items-center justify-center shrink-0">
+      {/* FAIXA DE ESTATÍSTICAS RÁPIDAS (COMPACTA & ALINHADA) */}
+      <section className="relative z-20 -mt-8 pb-8 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md border border-zinc-200/80 py-5 px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 md:divide-x md:divide-zinc-200/80">
+            <div className="flex items-center justify-center md:justify-start gap-3 md:px-4 first:md:pl-0">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#3a7d44] flex items-center justify-center shrink-0">
                 <Utensils className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl md:text-3xl font-black text-[#1b4332] leading-none">+45</span>
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#e08e24]">
-                    Receitas Exclusivas
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-1">
-                  Criadas por chefs e nutricionistas
-                </p>
+                <span className="block text-xl font-black text-[#1b4332] leading-none">+45</span>
+                <span className="block text-[11px] font-bold text-zinc-500 mt-0.5">
+                  Receitas Exclusivas
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 lg:px-6">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-900/10 text-[#3a7d44] flex items-center justify-center shrink-0">
+            <div className="flex items-center justify-center md:justify-start gap-3 md:px-4">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#3a7d44] flex items-center justify-center shrink-0">
                 <Sprout className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl md:text-3xl font-black text-[#1b4332] leading-none">100%</span>
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#3a7d44]">
-                    Sem Transgênicos
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-1">
-                  Ingredientes puros e rastreáveis
-                </p>
+                <span className="block text-xl font-black text-[#1b4332] leading-none">100%</span>
+                <span className="block text-[11px] font-bold text-zinc-500 mt-0.5">
+                  Sem Transgênicos
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 lg:px-6">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-900/10 text-[#e08e24] flex items-center justify-center shrink-0">
+            <div className="flex items-center justify-center md:justify-start gap-3 md:px-4">
+              <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#e08e24] flex items-center justify-center shrink-0">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl md:text-3xl font-black text-[#1b4332] leading-none">+180</span>
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#e08e24]">
-                    Pontos de Venda
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-1">
-                  Abastecidos todas as manhãs
-                </p>
+                <span className="block text-xl font-black text-[#1b4332] leading-none">+180</span>
+                <span className="block text-[11px] font-bold text-zinc-500 mt-0.5">
+                  Pontos de Venda
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 lg:px-6 last:lg:pr-2">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-900/10 text-[#3a7d44] flex items-center justify-center shrink-0">
+            <div className="flex items-center justify-center md:justify-start gap-3 md:px-4 last:md:pr-0">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#3a7d44] flex items-center justify-center shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl md:text-3xl font-black text-[#1b4332] leading-none">0%</span>
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#3a7d44]">
-                    Conservantes
-                  </span>
-                </div>
-                <p className="text-[11px] text-zinc-500 mt-1">
-                  Zero aditivos ou corantes químicos
-                </p>
+                <span className="block text-xl font-black text-[#1b4332] leading-none">0%</span>
+                <span className="block text-[11px] font-bold text-zinc-500 mt-0.5">
+                  Conservantes
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. WELCOME & 3 PILARES */}
-      <section className="py-16 bg-white text-center">
-        <div className="max-w-5xl mx-auto px-4 space-y-10">
-          <div className="space-y-2 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#3a7d44]">
+      {/* 3. PILARES & SOLUÇÕES (COMPACTO & ELEGANTE) */}
+      <section className="py-12 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="text-center space-y-1.5 max-w-xl mx-auto">
+            <span className="text-base font-serif italic text-[#3a7d44] block">
               Qualidade em Cada Detalhe
             </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold text-[#1b4332]">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] tracking-tight">
               Bem-vindo à Sunneen Alimentos Saudáveis
             </h2>
             <p className="text-xs text-zinc-500 leading-relaxed">
@@ -683,42 +645,57 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-7 border border-zinc-100 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col items-center bg-gradient-to-b from-white to-zinc-50/50">
-              <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center text-[#3a7d44] mb-4 shadow-inner border border-emerald-900/10">
-                <ShoppingBag className="w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="group p-6 bg-white border border-zinc-200/80 rounded-2xl shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-emerald-50 group-hover:bg-[#1b4332] group-hover:text-white rounded-xl flex items-center justify-center text-[#3a7d44] mb-3.5 transition-colors">
+                <ShoppingBag className="w-5 h-5" />
               </div>
-              <h3 className="font-black uppercase tracking-wider text-sm text-zinc-800">Pronto para Levar</h3>
+              <h3 className="font-black uppercase tracking-wider text-sm text-[#1b4332]">
+                Pronto para Levar
+              </h3>
               <p className="text-xs text-zinc-500 mt-2 mb-5 leading-relaxed">
                 Explore as nossas seleções frescas embaladas individualmente, perfeitas para um almoço rápido, nutritivo e cheio de sabor.
               </p>
-              <a href="#products" className="mt-auto px-5 py-2 bg-[#e08e24] hover:bg-[#c97d1b] transition-colors text-white text-[11px] font-bold uppercase tracking-wider rounded">
+              <a
+                href="#products"
+                className="mt-auto px-4 py-1.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-[11px] font-bold uppercase tracking-wider rounded-full transition-colors"
+              >
                 Ver Opções
               </a>
             </div>
 
-            <div className="p-7 border border-zinc-100 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col items-center bg-gradient-to-b from-white to-zinc-50/50">
-              <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center text-[#3a7d44] mb-4 shadow-inner border border-emerald-900/10">
-                <Salad className="w-6 h-6" />
+            <div className="group p-6 bg-white border border-zinc-200/80 rounded-2xl shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-amber-50 group-hover:bg-[#e08e24] group-hover:text-white rounded-xl flex items-center justify-center text-[#e08e24] mb-3.5 transition-colors">
+                <Salad className="w-5 h-5" />
               </div>
-              <h3 className="font-black uppercase tracking-wider text-sm text-zinc-800">Alimentos a Granel</h3>
+              <h3 className="font-black uppercase tracking-wider text-sm text-[#1b4332]">
+                Alimentos a Granel
+              </h3>
               <p className="text-xs text-zinc-500 mt-2 mb-5 leading-relaxed">
                 Disponibilizamos saladas, grãos, pastas e proteínas vegetais em embalagens ideais para restaurantes, empórios, hotéis e cafés.
               </p>
-              <a href="#contact" className="mt-auto px-5 py-2 bg-[#e08e24] hover:bg-[#c97d1b] transition-colors text-white text-[11px] font-bold uppercase tracking-wider rounded">
+              <a
+                href="#contact"
+                className="mt-auto px-4 py-1.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-[11px] font-bold uppercase tracking-wider rounded-full transition-colors"
+              >
                 Para Empresas
               </a>
             </div>
 
-            <div className="p-7 border border-zinc-100 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col items-center bg-gradient-to-b from-white to-zinc-50/50">
-              <div className="w-14 h-14 bg-emerald-50 rounded-full flex items-center justify-center text-[#3a7d44] mb-4 shadow-inner border border-emerald-900/10">
-                <Sprout className="w-6 h-6" />
+            <div className="group p-6 bg-white border border-zinc-200/80 rounded-2xl shadow-xs hover:shadow-md transition-all flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-emerald-50 group-hover:bg-[#1b4332] group-hover:text-white rounded-xl flex items-center justify-center text-[#3a7d44] mb-3.5 transition-colors">
+                <Sprout className="w-5 h-5" />
               </div>
-              <h3 className="font-black uppercase tracking-wider text-sm text-zinc-800">100% Sem Transgênicos</h3>
+              <h3 className="font-black uppercase tracking-wider text-sm text-[#1b4332]">
+                100% Sem Transgênicos
+              </h3>
               <p className="text-xs text-zinc-500 mt-2 mb-5 leading-relaxed">
                 Total compromisso com ingredientes naturais, rastreáveis e isentos de modificações genéticas, cultivados com respeito à terra.
               </p>
-              <a href="#about" className="mt-auto px-5 py-2 bg-[#e08e24] hover:bg-[#c97d1b] transition-colors text-white text-[11px] font-bold uppercase tracking-wider rounded">
+              <a
+                href="#about"
+                className="mt-auto px-4 py-1.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-[11px] font-bold uppercase tracking-wider rounded-full transition-colors"
+              >
                 Nossa Origem
               </a>
             </div>
@@ -726,175 +703,230 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. OUR STORY BANNER */}
-      <section id="about" className="relative py-16 bg-zinc-100 border-y border-zinc-200">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="grid grid-cols-2 gap-3 w-full md:w-1/2">
-            <div className="relative h-36 sm:h-44 rounded-lg overflow-hidden shadow">
-              <Image
-                src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=400&q=80"
-                alt="Salada mista"
-                fill
-                sizes="(max-width: 768px) 50vw, 250px"
-                className="object-cover"
-              />
+      {/* 4. NOSSA HISTÓRIA & OPERAÇÃO */}
+      <section id="about" className="py-16 bg-white border-y border-zinc-200/70 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-8 items-center">
+          {/* Mosaico Fotográfico Compacto */}
+          <div className="lg:col-span-6 grid grid-cols-12 gap-3 items-center">
+            <div className="col-span-7 space-y-3">
+              <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden shadow-md">
+                <Image
+                  src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=700&q=80"
+                  alt="Preparação artesanal na cozinha Sunneen"
+                  fill
+                  sizes="(max-width: 768px) 60vw, 300px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="bg-[#1b4332] text-white p-4 rounded-2xl shadow-sm">
+                <span className="text-base font-black text-[#f4a51c] block">Desde o Campo</span>
+                <p className="text-[11px] text-emerald-100/90 mt-0.5 leading-relaxed">
+                  Parceria direta com agricultores familiares para garantir colheita fresca todos os dias.
+                </p>
+              </div>
             </div>
-            <div className="relative h-36 sm:h-44 rounded-lg overflow-hidden shadow">
-              <Image
-                src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=80"
-                alt="Salada colorida"
-                fill
-                sizes="(max-width: 768px) 50vw, 250px"
-                className="object-cover"
-              />
+
+            <div className="col-span-5 space-y-3">
+              <div className="bg-[#ebe6dc] p-4 rounded-2xl border border-zinc-200/80">
+                <span className="text-2xl font-black text-[#1b4332] block">100%</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#3a7d44] block mt-0.5">
+                  Rastreável & Artesanal
+                </span>
+              </div>
+              <div className="relative h-52 sm:h-60 rounded-2xl overflow-hidden shadow-md">
+                <Image
+                  src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=600&q=80"
+                  alt="Chef preparando ingredientes frescos"
+                  fill
+                  sizes="(max-width: 768px) 40vw, 240px"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="w-full md:w-1/2 bg-white p-8 rounded-xl shadow-sm border border-zinc-200 text-center md:text-left">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#3a7d44] block mb-1">
-              Nossa História
+          {/* Conteúdo Editorial */}
+          <div className="lg:col-span-6 space-y-4">
+            <span className="text-base font-serif italic text-[#3a7d44] block">
+              Nossa História & Operação
             </span>
-            <h3 className="text-2xl font-black text-[#1b4332] uppercase mb-3">
-              Tradição em Fazer o Bem!
-            </h3>
-            <p className="text-xs text-zinc-600 mb-4 leading-relaxed">
-              A nossa paixão por hábitos alimentares mais saudáveis inspirou as receitas caseiras que deram início à Sunneen Alimentos Saudáveis. O que começou em uma pequena cozinha familiar hoje abastece milhares de pessoas que não abrem mão de comer bem todos os dias.
-            </p>
-            <div className="grid grid-cols-2 gap-3 mb-6 text-left text-[11px] text-zinc-700 font-semibold">
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#3a7d44] shrink-0" />
-                <span>Produtores Familiares</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#3a7d44] shrink-0" />
-                <span>Receitas Artesanais</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#3a7d44] shrink-0" />
-                <span>Rastreabilidade Total</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-[#3a7d44] shrink-0" />
-                <span>Embalagens Recicláveis</span>
-              </div>
-            </div>
-            <a
-              href="#contact"
-              className="inline-block px-6 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow"
-            >
-              Conheça Nossa Jornada
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. PRODUTO PRINCIPAL INTERATIVO: WRAP DE ABACATE & TABELA NUTRICIONAL */}
-      <section id="featured-wrap" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#3a7d44] block">
-            Raio-X do Sabor • Clique nos Ingredientes
-          </span>
-          <h2 className="text-3xl md:text-4xl font-black text-[#1b4332] tracking-wide">
-            Wrap de Abacate com Bacon
-          </h2>
-
-          {/* Abas de ingredientes interativas */}
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] font-semibold">
-            {INGREDIENT_DETAILS.map((item, idx) => (
-              <button
-                key={item.name}
-                onClick={() => setSelectedIngredient(idx)}
-                className={`px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
-                  selectedIngredient === idx
-                    ? "bg-[#e08e24] text-white shadow-sm scale-105"
-                    : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Card de informação do ingrediente selecionado */}
-          <div className="max-w-xl mx-auto bg-[#f4f7f4] border border-emerald-900/10 rounded-xl p-4 text-xs text-zinc-700">
-            <span className="inline-block bg-[#3a7d44] text-white text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full mb-1.5">
-              {currentIng.badge}
-            </span>
-            <p className="leading-relaxed">
-              <strong className="text-[#1b4332]">{currentIng.name}:</strong> {currentIng.desc}
-            </p>
-          </div>
-
-          {/* Destaque central e fotografia */}
-          <div className="relative py-8">
-            <span className="absolute inset-0 flex items-center justify-center text-5xl sm:text-7xl md:text-8xl font-black text-zinc-100 select-none uppercase tracking-widest -z-10">
-              Feito à Mão
-            </span>
-
-            <div className="relative w-72 sm:w-96 h-52 sm:h-64 mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-              <Image
-                src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80"
-                alt="Wrap de Abacate com Bacon cortado"
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          {/* Ficha com métricas nutricionais dinâmicas */}
-          <div className="pt-4 max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-b border-zinc-200 py-4">
-            <div className="text-left font-serif italic text-2xl font-bold text-[#3a7d44]">
-              Fresco
-            </div>
-            <div className="flex gap-4 sm:gap-6 text-center">
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.carb}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Carbo</span>
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.fiber}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Fibras</span>
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.cal}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Calorias</span>
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.vitC}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Vit C</span>
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.vitA}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Vit A</span>
-              </div>
-              <div>
-                <span className="block text-sm font-bold text-zinc-800">{currentIng.stats.iron}</span>
-                <span className="block text-[10px] text-zinc-400 uppercase">Ferro</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. GUIA INTERATIVO DE REFEIÇÃO POR OBJETIVO */}
-      <section id="nutri-guide" className="py-20 bg-[#ebe6dc]/60 border-y border-zinc-200">
-        <div className="max-w-5xl mx-auto px-4 space-y-10">
-          {/* Cabeçalho no mesmo padrão visual da página */}
-          <div className="text-center space-y-2 max-w-2xl mx-auto">
-            <span className="text-xl font-serif italic text-[#3a7d44] block">
-              Nutrição Personalizada
-            </span>
-            <h2 className="text-3xl md:text-4xl font-black uppercase text-[#1b4332] tracking-tight">
-              Qual é o Seu Objetivo Hoje?
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] tracking-tight leading-tight">
+              Tradição em Fazer o Bem, com Equipe Dedicada.
             </h2>
             <p className="text-xs text-zinc-600 leading-relaxed">
-              Selecione a sua meta do dia e descubra a combinação perfeita do nosso cardápio recomendada pelos nossos nutricionistas.
+              A nossa paixão por hábitos alimentares mais saudáveis inspirou as receitas caseiras que deram início à Sunneen Alimentos Saudáveis. O que começou em uma pequena cozinha familiar hoje abastece milhares de pessoas que não abrem mão de comer bem todos os dias.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              {[
+                { title: "Selo Non-GMO", desc: "Livre de transgênicos e agrotóxicos", Icon: ShieldCheck },
+                { title: "Logística Fria Diária", desc: "Frota refrigerada todas as manhãs", Icon: Truck },
+                { title: "Cuidado Nutricional", desc: "Baixo sódio e rico em fibras", Icon: Heart },
+                { title: "Sustentabilidade", desc: "Embalagens 100% recicláveis", Icon: Award },
+              ].map((feat) => {
+                const FeatIcon = feat.Icon;
+                return (
+                  <div
+                    key={feat.title}
+                    className="flex items-start gap-2.5 p-3 rounded-xl bg-[#faf9f5] border border-zinc-200/70"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-[#1b4332] flex items-center justify-center shrink-0">
+                      <FeatIcon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-black text-[#1b4332]">{feat.title}</h4>
+                      <p className="text-[11px] text-zinc-500">{feat.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. PRODUTO PRINCIPAL INTERATIVO: WRAP DE ABACATE */}
+      <section id="featured-wrap" className="py-16 px-4 sm:px-6 bg-[#faf9f5]">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="text-center space-y-1.5 max-w-xl mx-auto">
+            <span className="text-base font-serif italic text-[#3a7d44] block">
+              Raio-X do Sabor • Feito à Mão
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] tracking-tight">
+              Wrap de Abacate com Bacon
+            </h2>
+            <p className="text-xs text-zinc-600">
+              Clique em cada ingrediente para explorar a origem e os valores nutricionais da nossa receita mais pedida.
             </p>
           </div>
 
-          {/* Seletor de Objetivos em formato elegante e alinhado ao design do site */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+          <div className="grid lg:grid-cols-12 gap-8 items-center bg-white rounded-2xl p-5 sm:p-8 shadow-md border border-zinc-200/80">
+            {/* Coluna Esquerda: Foto + Tabela Nutricional */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="relative h-56 sm:h-64 rounded-xl overflow-hidden shadow-md">
+                <Image
+                  src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=900&q=80"
+                  alt="Wrap de Abacate com Bacon cortado"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 450px"
+                  className="object-cover"
+                />
+                <div className="absolute top-3 left-3 bg-[#1b4332]/90 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                  {currentIng.badge}
+                </div>
+              </div>
+
+              {/* Barra de métricas nutricionais */}
+              <div className="bg-[#f4f7f4] rounded-xl p-3.5 border border-emerald-900/10 flex flex-wrap items-center justify-between gap-3">
+                <div className="font-serif italic text-xl font-bold text-[#3a7d44] pr-1">
+                  Fresco
+                </div>
+                <div className="grid grid-cols-6 gap-2 flex-1 text-center">
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#1b4332]">{currentIng.stats.carb}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Carbo</span>
+                  </div>
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#1b4332]">{currentIng.stats.fiber}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Fibras</span>
+                  </div>
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#e08e24]">{currentIng.stats.cal}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Kcal</span>
+                  </div>
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#3a7d44]">{currentIng.stats.vitC}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Vit C</span>
+                  </div>
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#3a7d44]">{currentIng.stats.vitA}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Vit A</span>
+                  </div>
+                  <div className="bg-white rounded-lg py-1.5 px-1">
+                    <span className="block text-xs font-black text-[#1b4332]">{currentIng.stats.iron}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-bold">Ferro</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Coluna Direita: Seletor de Ingredientes */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {INGREDIENT_DETAILS.map((item, idx) => {
+                  const active = selectedIngredient === idx;
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => setSelectedIngredient(idx)}
+                      className={`p-3 rounded-xl text-left transition-all border cursor-pointer ${
+                        active
+                          ? "bg-[#1b4332] border-[#1b4332] text-white shadow-sm"
+                          : "bg-zinc-50 border-zinc-200/80 text-zinc-700 hover:bg-emerald-50/50 hover:border-[#3a7d44]"
+                      }`}
+                    >
+                      <span className={`block text-[9px] font-bold uppercase tracking-wider ${active ? "text-[#f4a51c]" : "text-zinc-400"}`}>
+                        0{idx + 1}
+                      </span>
+                      <span className="block text-[11px] font-extrabold mt-0.5 truncate">
+                        {item.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-[#faf9f5] rounded-xl p-4 border border-zinc-200/80 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#3a7d44]">
+                    {currentIng.origin}
+                  </span>
+                  <span className="text-[10px] font-bold bg-amber-100 text-[#1b4332] px-2.5 py-0.5 rounded-full">
+                    {currentIng.badge}
+                  </span>
+                </div>
+                <h3 className="text-lg font-black text-[#1b4332]">
+                  {currentIng.name}
+                </h3>
+                <p className="text-xs text-zinc-600 leading-relaxed">
+                  {currentIng.desc}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-1">
+                <div>
+                  <span className="text-[10px] text-zinc-400 block">Preço sugerido na loja</span>
+                  <span className="text-xl font-black text-[#1b4332]">R$ 29,90</span>
+                </div>
+                <a
+                  href="#where-to-buy"
+                  className="px-5 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-colors shadow-xs"
+                >
+                  Onde Encontrar
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. GUIA INTERATIVO DE REFEIÇÃO POR OBJETIVO (COMPACTO & ELEGANTE) */}
+      <section id="nutri-guide" className="py-14 bg-[#ebe6dc]/60 border-y border-zinc-200/80 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <div className="text-center space-y-1.5 max-w-xl mx-auto">
+            <span className="text-base font-serif italic text-[#3a7d44] block">
+              Nutrição Personalizada
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black uppercase text-[#1b4332] tracking-tight">
+              Qual é o Seu Objetivo Hoje?
+            </h2>
+            <p className="text-xs text-zinc-600">
+              Selecione a sua meta do dia e descubra a combinação ideal recomendada pelos nossos nutricionistas.
+            </p>
+          </div>
+
+          {/* Abas horizontais compactas */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             {GOALS.map((goal) => {
               const active = selectedGoal.id === goal.id;
               const GoalIcon = goal.Icon;
@@ -902,59 +934,59 @@ export default function Home() {
                 <button
                   key={goal.id}
                   onClick={() => setSelectedGoal(goal)}
-                  className={`p-5 rounded-xl text-center transition-all border cursor-pointer flex flex-col items-center gap-2 group ${
+                  className={`px-3.5 py-3 rounded-xl text-left transition-all border cursor-pointer flex items-center gap-2.5 group ${
                     active
-                      ? "bg-[#1b4332] border-[#1b4332] text-white shadow-md -translate-y-0.5"
-                      : "bg-white border-zinc-200/90 text-zinc-700 hover:border-[#3a7d44] hover:shadow-xs"
+                      ? "bg-[#1b4332] border-[#1b4332] text-white shadow-md"
+                      : "bg-white border-zinc-200/90 text-zinc-700 hover:border-[#3a7d44]"
                   }`}
                 >
                   <span
-                    className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                       active
-                        ? "bg-[#f4a51c] text-[#1b4332] shadow-sm"
+                        ? "bg-[#f4a51c] text-[#1b4332]"
                         : "bg-emerald-50 text-[#3a7d44] group-hover:bg-emerald-100"
                     }`}
                   >
-                    <GoalIcon className="w-5 h-5 stroke-[2.2]" />
+                    <GoalIcon className="w-4 h-4 stroke-[2.2]" />
                   </span>
-                  <span className="font-black text-xs uppercase tracking-wider block">
-                    {goal.label}
-                  </span>
-                  <span
-                    className={`text-[10px] font-medium ${
-                      active ? "text-[#f4a51c]" : "text-zinc-400"
-                    }`}
-                  >
-                    {goal.subtitle}
-                  </span>
+                  <div className="min-w-0">
+                    <span className="font-black text-[11px] uppercase tracking-wider block truncate">
+                      {goal.label}
+                    </span>
+                    <span
+                      className={`text-[10px] font-medium block truncate ${
+                        active ? "text-[#f4a51c]" : "text-zinc-400"
+                      }`}
+                    >
+                      {goal.subtitle}
+                    </span>
+                  </div>
                 </button>
               );
             })}
           </div>
 
-          {/* Card de Recomendação integrado com foto, selos e barra nutricional */}
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-zinc-200/80 grid md:grid-cols-12 gap-8 items-center">
-            {/* Imagem do combo recomendado */}
-            <div className="md:col-span-5 relative h-56 sm:h-64 rounded-xl overflow-hidden shadow-md border-4 border-[#f4f7f4]">
+          {/* Card de Recomendação compacto */}
+          <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-md border border-zinc-200/80 grid md:grid-cols-12 gap-6 items-center">
+            <div className="md:col-span-4 relative h-44 sm:h-48 rounded-xl overflow-hidden shadow-xs">
               <Image
                 src={selectedGoal.image}
                 alt={selectedGoal.recommendation}
                 fill
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 300px"
                 className="object-cover"
               />
-              <span className="absolute top-3 left-3 bg-[#e08e24] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
+              <span className="absolute top-2.5 left-2.5 bg-[#e08e24] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow">
                 Sugestão do Chef
               </span>
             </div>
 
-            {/* Conteúdo e Tabela Nutricional */}
-            <div className="md:col-span-7 space-y-5 text-left">
-              <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#3a7d44] block">
+            <div className="md:col-span-8 space-y-3.5 text-left">
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#3a7d44] block">
                   Combinação Recomendada
                 </span>
-                <h3 className="text-xl md:text-2xl font-black text-[#1b4332] leading-snug">
+                <h3 className="text-lg sm:text-xl font-black text-[#1b4332] leading-snug">
                   {selectedGoal.recommendation}
                 </h3>
                 <p className="text-xs text-zinc-600 leading-relaxed">
@@ -962,50 +994,43 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Selos de benefícios */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {selectedGoal.highlights.map((item) => (
                   <span
                     key={item}
-                    className="inline-flex items-center gap-1.5 bg-[#f4f7f4] border border-emerald-900/10 text-[#1b4332] text-[11px] font-semibold px-3 py-1 rounded-full"
+                    className="inline-flex items-center gap-1 bg-[#f4f7f4] border border-emerald-900/10 text-[#1b4332] text-[10px] font-semibold px-2.5 py-1 rounded-full"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#3a7d44]" />
+                    <CheckCircle2 className="w-3 h-3 text-[#3a7d44]" />
                     {item}
                   </span>
                 ))}
               </div>
 
-              {/* Faixa nutricional no mesmo estilo clássico da página */}
-              <div className="border-t border-b border-zinc-200 py-3.5 flex flex-wrap items-center justify-between gap-4">
-                <div className="font-serif italic text-xl font-bold text-[#3a7d44]">
-                  Nutrição
-                </div>
-                <div className="flex gap-5 sm:gap-7 text-center">
+              <div className="border-t border-zinc-200 pt-3 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex gap-4 sm:gap-6 text-center">
                   <div>
-                    <span className="block text-sm font-black text-[#1b4332]">{selectedGoal.macros.kcal}</span>
-                    <span className="block text-[10px] text-zinc-400 uppercase font-semibold">Energia</span>
+                    <span className="block text-xs font-black text-[#1b4332]">{selectedGoal.macros.kcal}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-semibold">Energia</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-black text-[#3a7d44]">{selectedGoal.macros.prot}</span>
-                    <span className="block text-[10px] text-zinc-400 uppercase font-semibold">Proteínas</span>
+                    <span className="block text-xs font-black text-[#3a7d44]">{selectedGoal.macros.prot}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-semibold">Proteínas</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-black text-[#e08e24]">{selectedGoal.macros.carb}</span>
-                    <span className="block text-[10px] text-zinc-400 uppercase font-semibold">Carboidratos</span>
+                    <span className="block text-xs font-black text-[#e08e24]">{selectedGoal.macros.carb}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-semibold">Carbo</span>
                   </div>
                   <div>
-                    <span className="block text-sm font-black text-zinc-800">{selectedGoal.macros.fat}</span>
-                    <span className="block text-[10px] text-zinc-400 uppercase font-semibold">Gorduras Boas</span>
+                    <span className="block text-xs font-black text-zinc-800">{selectedGoal.macros.fat}</span>
+                    <span className="block text-[9px] text-zinc-400 uppercase font-semibold">Gorduras</span>
                   </div>
                 </div>
-              </div>
 
-              <div>
                 <a
                   href="#products"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-[11px] font-bold uppercase tracking-wider rounded-full transition-colors"
                 >
-                  Ver no Cardápio
+                  <span>Ver no Cardápio</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -1014,144 +1039,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. NON-GMO & INGREDIENTES + DIFERENCIAIS */}
-      <section className="py-16 bg-[#f4f7f4]">
-        <div className="max-w-5xl mx-auto px-4 space-y-14">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div className="space-y-4">
-              <span className="text-xl font-serif italic text-[#3a7d44] block">
-                Ingredientes Puros
-              </span>
-              <h2 className="text-3xl font-black uppercase text-[#1b4332] tracking-tight">
-                100% Sem Transgênicos
-              </h2>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Utilizamos exclusivamente ingredientes frescos de alta qualidade e de origem responsável. A nossa oferta inclui feijões orgânicos, tofu fresco, quinoa real, sementes selecionadas e vegetais colhidos no dia, preparados apenas com azeite extravirgem e temperos naturais.
-              </p>
-              <div className="pt-1">
-                <a
-                  href="#products"
-                  className="inline-block px-5 py-2.5 bg-[#3a7d44] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors"
-                >
-                  Conhecer Ingredientes
-                </a>
-              </div>
-            </div>
-
-            <div className="relative h-64 sm:h-72 rounded-xl overflow-hidden shadow-lg">
-              <Image
-                src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80"
-                alt="Tacos frescos e saudáveis"
-                fill
-                sizes="(max-width: 768px) 100vw, 500px"
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          {/* 4 Pilares de Diferenciais */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 pt-4">
-            <div className="bg-white p-5 rounded-xl border border-zinc-200/70 shadow-xs space-y-2">
-              <ShieldCheck className="w-6 h-6 text-[#3a7d44]" />
-              <h4 className="font-bold text-xs uppercase text-[#1b4332]">Selo Non-GMO</h4>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                Ingredientes auditados e livres de qualquer modificação genética ou agrotóxicos pesados.
-              </p>
-            </div>
-            <div className="bg-white p-5 rounded-xl border border-zinc-200/70 shadow-xs space-y-2">
-              <Truck className="w-6 h-6 text-[#e08e24]" />
-              <h4 className="font-bold text-xs uppercase text-[#1b4332]">Logística Fria Diária</h4>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                Frota refrigerada própria que garante que as tigelas cheguem frescas todas as manhãs.
-              </p>
-            </div>
-            <div className="bg-white p-5 rounded-xl border border-zinc-200/70 shadow-xs space-y-2">
-              <Heart className="w-6 h-6 text-[#3a7d44]" />
-              <h4 className="font-bold text-xs uppercase text-[#1b4332]">Cuidado Nutricional</h4>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                Cardápio equilibrado com baixo teor de sódio e rico em fibras, vitaminas e antioxidantes.
-              </p>
-            </div>
-            <div className="bg-white p-5 rounded-xl border border-zinc-200/70 shadow-xs space-y-2">
-              <Award className="w-6 h-6 text-[#e08e24]" />
-              <h4 className="font-bold text-xs uppercase text-[#1b4332]">Sustentabilidade</h4>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                Embalagens 100% recicláveis e compostáveis com desperdício zero na nossa cozinha central.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. EQUIPA & COZINHA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="relative h-40 rounded-lg overflow-hidden shadow">
-              <Image
-                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80"
-                alt="Preparação na cozinha"
-                fill
-                sizes="(max-width: 768px) 50vw, 250px"
-                className="object-cover"
-              />
-            </div>
-            <div className="relative h-40 rounded-lg overflow-hidden shadow">
-              <Image
-                src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=400&q=80"
-                alt="Chef de cozinha"
-                fill
-                sizes="(max-width: 768px) 50vw, 250px"
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <span className="text-xl font-serif italic text-[#3a7d44] block">
-              Nossa Operação
-            </span>
-            <h2 className="text-3xl font-black uppercase text-[#1b4332] tracking-tight">
-              Equipe Dedicada
-            </h2>
-            <p className="text-xs text-zinc-600 leading-relaxed">
-              Trabalhamos diariamente com equipes treinadas nas mais rigorosas práticas de segurança alimentar e no respeito pelo frescor dos alimentos do campo até a embalagem final.
-            </p>
-            <a
-              href="#where-to-buy"
-              className="inline-block px-5 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors"
-            >
-              Encontrar Loja
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 9. CARDÁPIO EM DESTAQUE INTERATIVO (MAIS ABAIXO NA LANDING PAGE) */}
-      <section id="products" className="py-20 bg-[#f8f9f7] border-t border-zinc-200">
-        <div className="max-w-6xl mx-auto px-4 space-y-10">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <span className="text-xl font-serif italic text-[#3a7d44] block">
+      {/* 7. CARDÁPIO COMPLETO INTERATIVO (COMPACTO) */}
+      <section id="products" className="py-14 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div className="text-center space-y-1.5 max-w-xl mx-auto">
+            <span className="text-sm font-serif italic text-[#3a7d44] block">
               Cardápio Completo
             </span>
-            <h2 className="text-3xl md:text-4xl font-black uppercase text-[#1b4332] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase text-[#1b4332] tracking-tight">
               Nossas Criações Mais Amadas
             </h2>
-            <p className="text-xs text-zinc-600 leading-relaxed">
-              Cada receita é elaborada por chefs e nutricionistas para entregar o equilíbrio perfeito entre texturas crocantes, temperos naturais e alta densidade nutricional.
+            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+              Receitas elaboradas por chefs e nutricionistas com temperos naturais e alta densidade nutricional.
             </p>
           </div>
 
-          {/* Filtros de Categoria */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
+          {/* Filtros de Categoria Compactos */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? "bg-[#1b4332] text-white shadow-sm"
-                    : "bg-white text-zinc-600 border border-zinc-200 hover:border-[#3a7d44] hover:text-[#3a7d44]"
+                    ? "bg-[#1b4332] text-white shadow-xs"
+                    : "bg-zinc-100 text-zinc-600 hover:bg-emerald-50 hover:text-[#1b4332]"
                 }`}
               >
                 {cat}
@@ -1159,49 +1071,46 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Grade de Produtos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            {filteredProducts.map((product) => (
+          {/* Grade de Produtos Compacta (4 colunas) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {visibleProducts.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden border border-zinc-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
+                className="bg-[#faf9f5] rounded-2xl overflow-hidden border border-zinc-200/80 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col group"
               >
-                <div className="relative h-52 overflow-hidden">
+                <div className="relative h-36 overflow-hidden">
                   <Image
                     src={product.image}
                     alt={product.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 380px"
+                    sizes="(max-width: 768px) 100vw, 260px"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 bg-[#1b4332]/90 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                  <span className="absolute top-2.5 left-2.5 bg-[#1b4332]/90 backdrop-blur text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
                     {product.tag}
-                  </span>
-                  <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur text-[#1b4332] text-xs font-black px-3 py-1 rounded-full shadow">
-                    {product.price}
                   </span>
                 </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#3a7d44]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#3a7d44] block">
                       {product.category}
                     </span>
-                    <h3 className="text-lg font-black text-[#1b4332] mt-0.5">
+                    <h3 className="text-sm font-black text-[#1b4332] mt-0.5 leading-snug">
                       {product.title}
                     </h3>
-                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                    <p className="text-xs text-zinc-500 mt-1 leading-relaxed line-clamp-2">
                       {product.desc}
                     </p>
                   </div>
 
-                  <div className="pt-3 border-t border-zinc-100 flex items-center justify-between text-[11px] font-bold text-zinc-600">
-                    <span className="flex items-center gap-1 text-[#e08e24]">
-                      <Flame className="w-3.5 h-3.5" />
+                  <div className="pt-2.5 border-t border-zinc-200/80 flex items-center justify-between text-[10px] font-bold">
+                    <span className="inline-flex items-center gap-1 text-[#e08e24] bg-amber-50 px-2 py-0.5 rounded-full">
+                      <Flame className="w-3 h-3" />
                       {product.calories}
                     </span>
-                    <span className="flex items-center gap-1 text-[#3a7d44]">
-                      <Utensils className="w-3.5 h-3.5" />
+                    <span className="inline-flex items-center gap-1 text-[#3a7d44] bg-emerald-50 px-2 py-0.5 rounded-full">
+                      <Utensils className="w-3 h-3" />
                       {product.protein}
                     </span>
                   </div>
@@ -1209,22 +1118,43 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* Botão Ver Mais / Mostrar Menos quando na aba Todos */}
+          {selectedCategory === "Todos" && (
+            <div className="text-center pt-2">
+              <button
+                onClick={() => setShowAllProducts((prev) => !prev)}
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-zinc-300 hover:border-[#3a7d44] text-xs font-bold uppercase tracking-wider text-[#1b4332] hover:bg-emerald-50/50 transition-all cursor-pointer"
+              >
+                <span>
+                  {showAllProducts
+                    ? "Mostrar Menos Opções"
+                    : `Ver Todas as ${PRODUCTS.length} Opções do Cardápio`}
+                </span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-[#3a7d44] transition-transform ${
+                    showAllProducts ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* 10. NOVA SEÇÃO: DEPOIMENTOS DE CLIENTES */}
-      <section className="py-16 bg-[#ebe6dc]/60 border-t border-zinc-200">
-        <div className="max-w-6xl mx-auto px-4 space-y-10">
-          <div className="text-center space-y-2 max-w-xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#3a7d44] block">
+      {/* 8. DEPOIMENTOS DE CLIENTES */}
+      <section className="py-12 bg-[#f4f7f4] border-t border-zinc-200/80 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <div className="text-center space-y-1 max-w-xl mx-auto">
+            <span className="text-sm font-serif italic text-[#3a7d44] block">
               Quem Prova, Recomenda
             </span>
-            <h2 className="text-2xl md:text-3xl font-black text-[#1b4332]">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] tracking-tight">
               O Que Dizem Nossos Clientes
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               {
                 name: "Mariana Costa",
@@ -1244,12 +1174,12 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.name}
-                className="bg-white p-6 rounded-2xl border border-zinc-200/80 shadow-sm flex flex-col justify-between space-y-4"
+                className="bg-white p-5 rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-1 text-[#f4a51c]">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-0.5 text-[#f4a51c]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
                     ))}
                   </div>
                   <p className="text-xs text-zinc-600 italic leading-relaxed">
@@ -1258,7 +1188,7 @@ export default function Home() {
                 </div>
                 <div className="pt-3 border-t border-zinc-100">
                   <span className="block text-xs font-black text-[#1b4332]">{item.name}</span>
-                  <span className="block text-[10px] text-[#3a7d44] font-semibold">{item.role}</span>
+                  <span className="block text-[11px] text-[#3a7d44] font-semibold">{item.role}</span>
                 </div>
               </div>
             ))}
@@ -1266,24 +1196,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 11. NOVA SEÇÃO: ONDE COMPRAR & PERGUNTAS FREQUENTES (FAQ) */}
-      <section id="where-to-buy" className="py-20 bg-white border-t border-zinc-200">
-        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-start">
+      {/* 9. ONDE COMPRAR & PERGUNTAS FREQUENTES (FAQ) */}
+      <section id="where-to-buy" className="py-14 bg-white border-t border-zinc-200/80 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
           {/* Onde Encontrar */}
-          <div className="space-y-6">
+          <div className="lg:col-span-6 space-y-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#e08e24] block mb-1">
+              <span className="text-sm font-serif italic text-[#3a7d44] block">
                 Pontos de Venda
               </span>
-              <h2 className="text-2xl md:text-3xl font-black text-[#1b4332]">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] mt-0.5">
                 Onde Encontrar a Sunneen
               </h2>
-              <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
-                Nossos produtos são entregues fresquinhos todas as manhãs nas melhores redes de mercados naturais, empórios gourmet e academias.
+              <p className="text-xs text-zinc-600 mt-1.5 leading-relaxed">
+                Produtos entregues fresquinhos todas as manhãs nas melhores redes de mercados naturais, empórios e academias.
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {[
                 {
                   store: "Empório Vida Verde - Jardins",
@@ -1306,19 +1236,19 @@ export default function Home() {
               ].map((loc) => (
                 <div
                   key={loc.store}
-                  className="p-4 rounded-xl border border-zinc-200 hover:border-[#3a7d44] transition-colors bg-[#f8f9f7] flex items-start justify-between gap-4"
+                  className="p-3.5 rounded-xl border border-zinc-200/90 hover:border-[#3a7d44] transition-all bg-[#faf9f5] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     <h4 className="text-xs font-black text-[#1b4332] flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#3a7d44]" />
+                      <MapPin className="w-3.5 h-3.5 text-[#3a7d44] shrink-0" />
                       {loc.store}
                     </h4>
-                    <p className="text-[11px] text-zinc-500">{loc.address}</p>
-                    <p className="text-[10px] text-zinc-400 flex items-center gap-1">
+                    <p className="text-[11px] text-zinc-600">{loc.address}</p>
+                    <p className="text-[11px] text-zinc-400 flex items-center gap-1">
                       <Clock className="w-3 h-3" /> {loc.hours}
                     </p>
                   </div>
-                  <span className="text-[10px] font-bold bg-emerald-100 text-[#1b4332] px-2.5 py-1 rounded-full shrink-0">
+                  <span className="self-start sm:self-center text-[10px] font-bold bg-emerald-100 text-[#1b4332] px-2.5 py-0.5 rounded-full shrink-0">
                     {loc.type}
                   </span>
                 </div>
@@ -1327,40 +1257,40 @@ export default function Home() {
           </div>
 
           {/* Perguntas Frequentes (FAQ) */}
-          <div className="space-y-6">
+          <div className="lg:col-span-6 space-y-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#3a7d44] block mb-1">
+              <span className="text-sm font-serif italic text-[#3a7d44] block">
                 Tire Suas Dúvidas
               </span>
-              <h2 className="text-2xl md:text-3xl font-black text-[#1b4332]">
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] mt-0.5">
                 Perguntas Frequentes
               </h2>
-              <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
-                Tudo o que você precisa saber sobre nossos ingredientes, conservação e fornecimento para empresas.
+              <p className="text-xs text-zinc-600 mt-1.5 leading-relaxed">
+                Tudo o que você precisa saber sobre nossos ingredientes, conservação e fornecimento.
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {FAQS.map((faq, idx) => {
                 const isOpen = openFaq === idx;
                 return (
                   <div
                     key={faq.q}
-                    className="border border-zinc-200 rounded-xl overflow-hidden bg-white"
+                    className="border border-zinc-200/90 rounded-xl overflow-hidden bg-[#faf9f5]"
                   >
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="w-full px-5 py-4 text-left flex items-center justify-between gap-4 text-xs font-bold text-[#1b4332] hover:bg-zinc-50 transition-colors cursor-pointer"
+                      className="w-full px-4 py-3 text-left flex items-center justify-between gap-3 text-xs font-bold text-[#1b4332] hover:bg-zinc-100/70 transition-colors cursor-pointer"
                     >
                       <span>{faq.q}</span>
                       <ChevronDown
-                        className={`w-4 h-4 text-[#3a7d44] shrink-0 transition-transform ${
+                        className={`w-3.5 h-3.5 text-[#3a7d44] shrink-0 transition-transform ${
                           isOpen ? "rotate-180" : ""
                         }`}
                       />
                     </button>
                     {isOpen && (
-                      <div className="px-5 pb-4 text-xs text-zinc-600 leading-relaxed border-t border-zinc-100 pt-3">
+                      <div className="px-4 pb-3.5 text-xs text-zinc-600 leading-relaxed border-t border-zinc-200/60 pt-2.5 bg-white">
                         {faq.a}
                       </div>
                     )}
@@ -1372,49 +1302,160 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 12. RODAPÉ */}
-      <footer id="contact" className="bg-[#123826] text-white pt-14 pb-8">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-xs pb-12 border-b border-emerald-900/50">
-          <div>
-            <h4 className="font-bold uppercase tracking-wider mb-4 text-[#e08e24]">Sobre a Sunneen</h4>
-            <ul className="space-y-2 text-zinc-300">
-              <li><a href="#home" className="hover:text-white transition-colors">Início</a></li>
-              <li><a href="#about" className="hover:text-white transition-colors">Sobre a Sunneen Alimentos Saudáveis</a></li>
-              <li><a href="#products" className="hover:text-white transition-colors">Nossos Produtos</a></li>
-              <li><a href="#where-to-buy" className="hover:text-white transition-colors">Onde Comprar</a></li>
-              <li><a href="#contact" className="hover:text-white transition-colors">Fale Conosco</a></li>
-            </ul>
+      {/* 10. SEÇÃO DE PARCERIAS & FORNECIMENTO B2B */}
+      <section className="py-14 bg-[#ebe6dc]/65 border-t border-zinc-200/80 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-zinc-200/80 grid lg:grid-cols-12 gap-6 items-center">
+          {/* Coluna Esquerda: Conteúdo, Benefícios B2B e Botões */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="space-y-1.5">
+              <span className="text-sm font-serif italic text-[#3a7d44] block">
+                Parcerias & Fornecimento B2B
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#1b4332] tracking-tight leading-tight">
+                Quer levar as refeições da Sunneen para o seu estabelecimento?
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                Abastecemos empórios, mercados, academias, cafés e eventos corporativos com entregas refrigeradas diárias e expositores exclusivos.
+              </p>
+            </div>
+
+            {/* Destaques do modelo B2B */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div className="p-3 rounded-xl bg-[#f4f7f4] border border-emerald-900/10 space-y-0.5">
+                <div className="flex items-center gap-1.5 text-[#3a7d44] font-black text-[11px] uppercase tracking-wider">
+                  <Truck className="w-3.5 h-3.5 shrink-0" />
+                  <span>Entrega Diária</span>
+                </div>
+                <p className="text-[11px] text-zinc-500 leading-snug">
+                  Reposição matinal com frota refrigerada.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#f4f7f4] border border-emerald-900/10 space-y-0.5">
+                <div className="flex items-center gap-1.5 text-[#1b4332] font-black text-[11px] uppercase tracking-wider">
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#e08e24] shrink-0" />
+                  <span>Expositor Próprio</span>
+                </div>
+                <p className="text-[11px] text-zinc-500 leading-snug">
+                  Geladeiras Grab N Go em comodato.
+                </p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#f4f7f4] border border-emerald-900/10 space-y-0.5">
+                <div className="flex items-center gap-1.5 text-[#3a7d44] font-black text-[11px] uppercase tracking-wider">
+                  <Award className="w-3.5 h-3.5 shrink-0" />
+                  <span>Alto Giro</span>
+                </div>
+                <p className="text-[11px] text-zinc-500 leading-snug">
+                  Rótulos limpos e embalagens com EAN.
+                </p>
+              </div>
+            </div>
+
+            {/* Botões de Ação Comercial */}
+            <div className="flex flex-wrap items-center gap-2.5 pt-1">
+              <a
+                href="tel:08007989004"
+                className="px-5 py-2.5 bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-bold text-[11px] uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-[#f4a51c]" />
+                <span>Falar com Consultor</span>
+              </a>
+              <a
+                href="mailto:contato@sunneen.com.br"
+                className="px-5 py-2.5 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 hover:border-[#3a7d44] font-bold text-[11px] uppercase tracking-wider rounded-full transition-all inline-flex items-center gap-1.5"
+              >
+                <span>Catálogo Atacado</span>
+                <ArrowRight className="w-3 h-3 text-[#3a7d44]" />
+              </a>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-bold uppercase tracking-wider mb-4 text-[#e08e24]">Ajuda</h4>
-            <ul className="space-y-2 text-zinc-300">
-              <li><a href="#where-to-buy" className="hover:text-white transition-colors">Perguntas Frequentes</a></li>
-              <li><a href="#nutri-guide" className="hover:text-white transition-colors">Guia Nutricional</a></li>
-              <li><a href="#contact" className="hover:text-white transition-colors">Parcerias & Atacado</a></li>
-              <li><a href="#contact" className="hover:text-white transition-colors">Envios e Entregas Refrigeradas</a></li>
-            </ul>
+          {/* Coluna Direita: Imagem e Selo de Parceiros */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative h-56 sm:h-64 rounded-xl overflow-hidden shadow-md border-2 border-[#f4f7f4]">
+              <Image
+                src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80"
+                alt="Seção de produtos naturais em empório parceiro"
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1b4332]/70 via-transparent to-transparent" />
+              <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur rounded-lg p-2.5 shadow-sm flex items-center justify-between gap-2">
+                <div>
+                  <span className="block text-[11px] font-black text-[#1b4332] uppercase">
+                    Rede de Parceiros Sunneen
+                  </span>
+                  <span className="block text-[10px] text-zinc-500">
+                    Empórios, Mercados, Academias & Cafés
+                  </span>
+                </div>
+                <span className="bg-[#e08e24] text-white text-[10px] font-black px-2.5 py-1 rounded-md shrink-0">
+                  +180 Lojas
+                </span>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div>
-            <h4 className="font-bold uppercase tracking-wider mb-4 text-[#e08e24]">Contato</h4>
-            <div className="space-y-2 text-zinc-300">
-              <p>Email: contato@sunneen.com.br</p>
-              <p>Telefone: 0800 798 9004</p>
-              <p>Seg - Sex: 8:00 - 18:00</p>
-              <p>Endereço: Av. Paulista, 1450 - São Paulo, SP</p>
+      {/* 11. RODAPÉ */}
+      <footer id="contact" className="bg-[#123826] text-white pt-16 pb-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 text-sm pb-12 border-b border-emerald-900/60">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#3a7d44] flex items-center justify-center">
+                <Leaf className="w-5 h-5 text-[#f4a51c]" />
+              </div>
+              <span className="text-xl font-black tracking-tight text-white">
+                Sunneen<span className="text-[#f4a51c]">.</span>
+              </span>
+            </div>
+            <p className="text-xs text-emerald-100/70 leading-relaxed">
+              Alimentação saudável, fresca e 100% livre de transgênicos, preparada artesanalmente todos os dias.
+            </p>
+            <div className="flex items-center gap-2 text-emerald-200/70 pt-1">
+              <a href="#" aria-label="Facebook" className="p-2 rounded-full bg-emerald-900/50 hover:bg-[#e08e24] hover:text-white transition-colors"><Facebook className="w-4 h-4" /></a>
+              <a href="#" aria-label="Twitter" className="p-2 rounded-full bg-emerald-900/50 hover:bg-[#e08e24] hover:text-white transition-colors"><Twitter className="w-4 h-4" /></a>
+              <a href="#" aria-label="LinkedIn" className="p-2 rounded-full bg-emerald-900/50 hover:bg-[#e08e24] hover:text-white transition-colors"><Linkedin className="w-4 h-4" /></a>
+              <a href="#" aria-label="Instagram" className="p-2 rounded-full bg-emerald-900/50 hover:bg-[#e08e24] hover:text-white transition-colors"><Instagram className="w-4 h-4" /></a>
             </div>
           </div>
 
           <div>
-            <h4 className="font-bold uppercase tracking-wider mb-4 text-[#e08e24]">Boletim Informativo</h4>
-            <p className="text-zinc-300 mb-3">Inscreva-se para receber dicas de nutrição, receitas e novidades.</p>
+            <h4 className="font-bold uppercase tracking-wider text-xs mb-4 text-[#f4a51c]">Navegação</h4>
+            <ul className="space-y-2.5 text-xs text-zinc-300">
+              <li><a href="#home" className="hover:text-white transition-colors">Início</a></li>
+              <li><a href="#about" className="hover:text-white transition-colors">Nossa História & Operação</a></li>
+              <li><a href="#featured-wrap" className="hover:text-white transition-colors">Raio-X do Sabor</a></li>
+              <li><a href="#nutri-guide" className="hover:text-white transition-colors">Nutrição Personalizada</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Cardápio Completo</a></li>
+              <li><a href="#where-to-buy" className="hover:text-white transition-colors">Onde Encontrar & FAQ</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold uppercase tracking-wider text-xs mb-4 text-[#f4a51c]">Contato</h4>
+            <div className="space-y-2.5 text-xs text-zinc-300">
+              <p>Email: contato@sunneen.com.br</p>
+              <p>Telefone: 0800 798 9004</p>
+              <p>Seg - Sex: 8:00 - 18:00</p>
+              <p>Av. Paulista, 1450 - São Paulo, SP</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-bold uppercase tracking-wider text-xs mb-4 text-[#f4a51c]">Boletim Informativo</h4>
+            <p className="text-xs text-zinc-300 mb-3 leading-relaxed">
+              Inscreva-se para receber dicas de nutrição, receitas e novidades.
+            </p>
             {newsletterSuccess ? (
-              <div className="p-3 rounded bg-emerald-900/70 border border-emerald-700 text-emerald-100 text-xs">
+              <div className="p-3.5 rounded-xl bg-emerald-900/70 border border-emerald-700 text-emerald-100 text-xs">
                 ✅ Obrigado por se inscrever! Em breve você receberá nossas novidades.
               </div>
             ) : (
-              <form className="flex flex-col gap-2" onSubmit={handleNewsletter}>
+              <form className="flex flex-col gap-2.5" onSubmit={handleNewsletter}>
                 <input
                   type="email"
                   value={newsletterEmail}
@@ -1422,11 +1463,11 @@ export default function Home() {
                   required
                   placeholder="Digite o seu email"
                   aria-label="Digite o seu email para a newsletter"
-                  className="px-3 py-2 bg-emerald-950/60 border border-emerald-800 rounded text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-[#e08e24]"
+                  className="px-4 py-2.5 bg-emerald-950/70 border border-emerald-800 rounded-xl text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-[#f4a51c]"
                 />
                 <button
                   type="submit"
-                  className="w-full py-2 bg-[#e08e24] hover:bg-[#c97d1b] font-bold uppercase tracking-wider rounded text-white transition-colors text-[11px] cursor-pointer"
+                  className="w-full py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] font-bold uppercase tracking-wider rounded-xl text-white transition-colors text-xs cursor-pointer"
                 >
                   Inscrever-se
                 </button>
@@ -1435,9 +1476,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-zinc-400">
+        <div className="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400">
           <p>© 2026 Sunneen Alimentos Saudáveis - Todos os direitos reservados.</p>
-          <div className="flex gap-4 mt-2 sm:mt-0">
+          <div className="flex gap-6 mt-3 sm:mt-0">
             <a href="#" className="hover:text-white transition-colors">Termos e Condições</a>
             <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>
           </div>
