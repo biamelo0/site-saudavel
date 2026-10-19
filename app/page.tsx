@@ -170,6 +170,72 @@ const PRODUCTS = [
     desc: "Arroz negro integral, feijão preto temperado, cubos de manga madura, pimentão vermelho, castanha de caju e molho de maracujá.",
     image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80",
   },
+  {
+    id: 7,
+    title: "Poke Bowl de Salmão & Gergelim",
+    category: "Tigelas Deli",
+    tag: "Fonte de Ômega-3",
+    calories: "440 kcal",
+    protein: "30g Proteína",
+    price: "R$ 42,90",
+    desc: "Salmão fresco em cubos, arroz de jasmim integral, sunomono de pepino, abacate, manga, cebolinha, alga nori e molho ponzu artesanal.",
+    image: "https://images.unsplash.com/photo-1546069901-d5bfd2cbfb1f?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 8,
+    title: "Wrap de Frango ao Pesto de Manjericão",
+    category: "Wraps Artesanais",
+    tag: "Proteína Magra",
+    calories: "380 kcal",
+    protein: "26g Proteína",
+    price: "R$ 31,90",
+    desc: "Tiras de frango orgânico grelhado, pesto artesanal de manjericão com castanhas, tomate seco, rúcula selvagem e pão folha de espinafre.",
+    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 9,
+    title: "Wrap Falafel Assado & Homus de Beterraba",
+    category: "Wraps Artesanais",
+    tag: "100% Vegano",
+    calories: "350 kcal",
+    protein: "15g Proteína",
+    price: "R$ 28,90",
+    desc: "Bolinhos de grão-de-bico assados com especiarias, homus cremoso de beterraba orgânica, folhas de hortelã, pepino e tahine cítrico.",
+    image: "https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 10,
+    title: "Salada Caesar de Kale & Grão-de-Bico",
+    category: "Saladas Proteicas",
+    tag: "Clássico Reinventado",
+    calories: "330 kcal",
+    protein: "21g Proteína",
+    price: "R$ 33,50",
+    desc: "Couve kale massageada no azeite, frango grelhado, grão-de-bico crocante no lugar dos croutons, lascas de amêndoas e molho caesar leve.",
+    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 11,
+    title: "Suco Verde Prensado a Frio",
+    category: "Sucos & Bebidas",
+    tag: "Sem Adição de Açúcar",
+    calories: "95 kcal",
+    protein: "2g Proteína",
+    price: "R$ 16,90",
+    desc: "Extração a frio 100% pura de maçã verde, couve orgânica, pepino, hortelã fresca, gengibre e limão tahiti para máxima absorção de vitaminas.",
+    image: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 12,
+    title: "Elixir Dourado de Cúrcuma & Laranja",
+    category: "Sucos & Bebidas",
+    tag: "Imunidade • Antioxidante",
+    calories: "110 kcal",
+    protein: "2g Proteína",
+    price: "R$ 17,50",
+    desc: "Combinação revigorante de laranja bahia, cenoura baby, cúrcuma fresca, água de coco natural e uma pitada de pimenta-preta.",
+    image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80",
+  },
 ];
 
 const GOALS = [
@@ -257,15 +323,22 @@ export default function Home() {
 
   const navLinks = [
     { label: "Início", href: "#home" },
-    { label: "Cardápio", href: "#products" },
+    { label: "Sobre Nós", href: "#about" },
     { label: "Destaque", href: "#featured-wrap" },
     { label: "Nutrição", href: "#nutri-guide" },
-    { label: "Sobre Nós", href: "#about" },
+    { label: "Cardápio", href: "#products" },
     { label: "Onde Comprar", href: "#where-to-buy" },
     { label: "Contato", href: "#contact" },
   ];
 
-  const categories = ["Todos", "Tigelas Deli", "Wraps Artesanais", "Saladas Proteicas", "Opções Veganas"];
+  const categories = [
+    "Todos",
+    "Tigelas Deli",
+    "Wraps Artesanais",
+    "Saladas Proteicas",
+    "Opções Veganas",
+    "Sucos & Bebidas",
+  ];
   const filteredProducts =
     selectedCategory === "Todos"
       ? PRODUCTS
@@ -284,24 +357,43 @@ export default function Home() {
   return (
     <div id="home" className="min-h-screen bg-white text-zinc-800 font-sans antialiased selection:bg-[#f4a51c] selection:text-white">
       {/* BARRA SUPERIOR DE ANÚNCIO */}
-      <div className="bg-[#1b4332] text-emerald-50 text-[11px] py-2 px-4 text-center font-medium tracking-wide">
-        🌿 <span className="font-bold text-[#f4a51c]">NOVIDADE:</span> Conheça as novas Tigelas Deli de 300g — 100% Naturais, Frescas e Sem Transgênicos!
+      <div className="bg-gradient-to-r from-[#123826] via-[#1b4332] to-[#123826] text-emerald-50 text-[11px] py-2 px-4 border-b border-emerald-800/50">
+        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center">
+          <span className="inline-flex items-center gap-1 bg-[#f4a51c] text-[#1b4332] font-black uppercase tracking-wider text-[10px] px-2.5 py-0.5 rounded-full shadow-xs">
+            <Leaf className="w-3 h-3 fill-current" />
+            Novidade
+          </span>
+          <p className="font-medium tracking-wide text-emerald-50/95">
+            Conheça as novas <strong className="font-bold text-white">Tigelas Deli de 300g</strong> — 100% Naturais, Frescas e Sem Transgênicos!
+          </p>
+          <a
+            href="#products"
+            className="hidden sm:inline-flex items-center gap-1 text-[#f4a51c] hover:text-amber-300 font-bold uppercase tracking-wider text-[10px] underline underline-offset-4 transition-colors"
+          >
+            Ver Sabores
+            <ArrowRight className="w-3 h-3" />
+          </a>
+        </div>
       </div>
 
       {/* 1. TOPO & NAVEGAÇÃO */}
       <header className="border-b border-zinc-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          {/* Logótipo */}
+          {/* Logótipo Minimalista & Moderno */}
           <a href="#home" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-10 h-10 rounded-full bg-emerald-600 group-hover:bg-[#1b4332] transition-colors flex items-center justify-center text-white font-black text-xl shadow-inner shrink-0">
-              S
+            <div className="w-9 h-9 rounded-xl bg-[#1b4332] group-hover:bg-[#3a7d44] transition-colors flex items-center justify-center shrink-0">
+              <Leaf className="w-4 h-4 text-[#f4a51c] stroke-[2.4]" />
             </div>
-            <div className="whitespace-nowrap">
-              <span className="text-xl font-black tracking-tight text-[#1b4332] block leading-none">
-                Sunneen
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest text-[#f4a51c] block mt-0.5">
-                Alimentos Saudáveis
+
+            <div className="whitespace-nowrap flex flex-col">
+              <div className="flex items-center gap-0.5">
+                <span className="text-xl font-extrabold tracking-tight text-[#1b4332] leading-none">
+                  sunneen
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#f4a51c]" />
+              </div>
+              <span className="text-[8.5px] uppercase font-bold tracking-[0.22em] text-zinc-400 leading-none mt-1">
+                alimentos saudáveis
               </span>
             </div>
           </a>
@@ -595,92 +687,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. NOVA SEÇÃO: CARDÁPIO EM DESTAQUE INTERATIVO */}
-      <section id="products" className="py-20 bg-[#f8f9f7] border-t border-zinc-200">
-        <div className="max-w-6xl mx-auto px-4 space-y-10">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#e08e24] block">
-              Cardápio Saudável
-            </span>
-            <h2 className="text-3xl md:text-4xl font-black text-[#1b4332]">
-              Nossas Criações Mais Amadas
-            </h2>
-            <p className="text-xs text-zinc-600 leading-relaxed">
-              Cada receita é elaborada por chefs e nutricionistas para entregar o equilíbrio perfeito entre texturas crocantes, temperos naturais e alta densidade nutricional.
-            </p>
-          </div>
-
-          {/* Filtros de Categoria */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                  selectedCategory === cat
-                    ? "bg-[#1b4332] text-white shadow-sm"
-                    : "bg-white text-zinc-600 border border-zinc-200 hover:border-[#3a7d44] hover:text-[#3a7d44]"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Grade de Produtos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-2xl overflow-hidden border border-zinc-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
-              >
-                <div className="relative h-52 overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 380px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-[#1b4332]/90 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                    {product.tag}
-                  </span>
-                  <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur text-[#1b4332] text-xs font-black px-3 py-1 rounded-full shadow">
-                    {product.price}
-                  </span>
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#3a7d44]">
-                      {product.category}
-                    </span>
-                    <h3 className="text-lg font-black text-[#1b4332] mt-0.5">
-                      {product.title}
-                    </h3>
-                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
-                      {product.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-zinc-100 flex items-center justify-between text-[11px] font-bold text-zinc-600">
-                    <span className="flex items-center gap-1 text-[#e08e24]">
-                      <Flame className="w-3.5 h-3.5" />
-                      {product.calories}
-                    </span>
-                    <span className="flex items-center gap-1 text-[#3a7d44]">
-                      <Utensils className="w-3.5 h-3.5" />
-                      {product.protein}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. OUR STORY BANNER */}
+      {/* 4. OUR STORY BANNER */}
       <section id="about" className="relative py-16 bg-zinc-100 border-y border-zinc-200">
         <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="grid grid-cols-2 gap-3 w-full md:w-1/2">
@@ -742,7 +749,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. PRODUTO PRINCIPAL INTERATIVO: WRAP DE ABACATE & TABELA NUTRICIONAL */}
+      {/* 5. PRODUTO PRINCIPAL INTERATIVO: WRAP DE ABACATE & TABELA NUTRICIONAL */}
       <section id="featured-wrap" className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
           <span className="text-xs font-bold uppercase tracking-widest text-[#3a7d44] block">
@@ -831,7 +838,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. NOVA SEÇÃO: GUIA INTERATIVO DE REFEIÇÃO POR OBJETIVO */}
+      {/* 6. GUIA INTERATIVO DE REFEIÇÃO POR OBJETIVO */}
       <section id="nutri-guide" className="py-20 bg-[#ebe6dc]/60 border-y border-zinc-200">
         <div className="max-w-5xl mx-auto px-4 space-y-10">
           {/* Cabeçalho no mesmo padrão visual da página */}
@@ -968,7 +975,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. NON-GMO & INGREDIENTES + DIFERENCIAIS */}
+      {/* 7. NON-GMO & INGREDIENTES + DIFERENCIAIS */}
       <section className="py-16 bg-[#f4f7f4]">
         <div className="max-w-5xl mx-auto px-4 space-y-14">
           <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -1037,7 +1044,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. EQUIPA & COZINHA */}
+      {/* 8. EQUIPA & COZINHA */}
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
           <div className="grid grid-cols-2 gap-3">
@@ -1077,6 +1084,91 @@ export default function Home() {
             >
               Encontrar Loja
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. CARDÁPIO EM DESTAQUE INTERATIVO (MAIS ABAIXO NA LANDING PAGE) */}
+      <section id="products" className="py-20 bg-[#f8f9f7] border-t border-zinc-200">
+        <div className="max-w-6xl mx-auto px-4 space-y-10">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-xl font-serif italic text-[#3a7d44] block">
+              Cardápio Completo
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black uppercase text-[#1b4332] tracking-tight">
+              Nossas Criações Mais Amadas
+            </h2>
+            <p className="text-xs text-zinc-600 leading-relaxed">
+              Cada receita é elaborada por chefs e nutricionistas para entregar o equilíbrio perfeito entre texturas crocantes, temperos naturais e alta densidade nutricional.
+            </p>
+          </div>
+
+          {/* Filtros de Categoria */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  selectedCategory === cat
+                    ? "bg-[#1b4332] text-white shadow-sm"
+                    : "bg-white text-zinc-600 border border-zinc-200 hover:border-[#3a7d44] hover:text-[#3a7d44]"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Grade de Produtos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-2xl overflow-hidden border border-zinc-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 380px"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-[#1b4332]/90 backdrop-blur text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                    {product.tag}
+                  </span>
+                  <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur text-[#1b4332] text-xs font-black px-3 py-1 rounded-full shadow">
+                    {product.price}
+                  </span>
+                </div>
+
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#3a7d44]">
+                      {product.category}
+                    </span>
+                    <h3 className="text-lg font-black text-[#1b4332] mt-0.5">
+                      {product.title}
+                    </h3>
+                    <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
+                      {product.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-zinc-100 flex items-center justify-between text-[11px] font-bold text-zinc-600">
+                    <span className="flex items-center gap-1 text-[#e08e24]">
+                      <Flame className="w-3.5 h-3.5" />
+                      {product.calories}
+                    </span>
+                    <span className="flex items-center gap-1 text-[#3a7d44]">
+                      <Utensils className="w-3.5 h-3.5" />
+                      {product.protein}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
