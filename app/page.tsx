@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Search,
   Leaf,
@@ -243,6 +244,50 @@ const PRODUCTS = [
     desc: "Combinação revigorante de laranja bahia, cenoura baby, cúrcuma fresca, água de coco natural e uma pitada de pimenta-preta.",
     image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80",
   },
+  {
+    id: 13,
+    title: "Combo Energia: Tigela Mediterrânea + Suco Verde",
+    category: "Combos & Kits",
+    tag: "Economize R$ 6,90",
+    calories: "435 kcal",
+    protein: "16g Proteína",
+    price: "R$ 42,90",
+    desc: "Nossa combinação mais pedida para o almoço: 1 Tigela Mediterrânea de Quinoa (300g) + 1 Suco Verde Prensado a Frio (350ml).",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 14,
+    title: "Combo Pós-Treino: Salada Chef + Wrap Abacate",
+    category: "Combos & Kits",
+    tag: "50g Proteína • Super Combo",
+    calories: "810 kcal",
+    protein: "50g Proteína",
+    price: "R$ 58,90",
+    desc: "Ideal para dividir ou para recuperação muscular intensa: 1 Salada Proteica Colheita do Chef + 1 Wrap de Abacate com Bacon.",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 15,
+    title: "Pudim de Chia com Manga & Coco",
+    category: "Sobremesas Naturais",
+    tag: "Zero Açúcar Refinado",
+    calories: "185 kcal",
+    protein: "5g Proteína",
+    price: "R$ 18,90",
+    desc: "Sementes de chia orgânica hidratadas no leite de coco artesanal, adoçado com néctar de tâmara, coberto com compota fresca de manga e coco queimado.",
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 16,
+    title: "Brownie Funcional de Cacau 70% & Nozes",
+    category: "Sobremesas Naturais",
+    tag: "Sem Glúten • Sem Lactose",
+    calories: "210 kcal",
+    protein: "6g Proteína",
+    price: "R$ 16,50",
+    desc: "Feito com farinha de amêndoas, cacau 70% de origem amazônica, açúcar de coco, óleo de coco extravirgem e pedaços crocantes de nozes.",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
+  },
 ];
 
 const GOALS = [
@@ -322,7 +367,7 @@ const FAQS = [
 export default function Home() {
   const [selectedIngredient, setSelectedIngredient] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [showAllProducts, setShowAllProducts] = useState(true);
   const [selectedGoal, setSelectedGoal] = useState(GOALS[0]);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -341,11 +386,13 @@ export default function Home() {
 
   const categories = [
     "Todos",
+    "Combos & Kits",
     "Tigelas Deli",
     "Wraps Artesanais",
     "Saladas Proteicas",
     "Opções Veganas",
     "Sucos & Bebidas",
+    "Sobremesas Naturais",
   ];
   const filteredProducts =
     selectedCategory === "Todos"
@@ -379,13 +426,13 @@ export default function Home() {
           <p className="font-medium tracking-wide text-emerald-50/95">
             Conheça as novas <strong className="font-bold text-white">Tigelas Deli de 300g</strong> — 100% Naturais, Frescas e Sem Transgênicos!
           </p>
-          <a
-            href="#products"
-            className="hidden sm:inline-flex items-center gap-1 text-[#f4a51c] hover:text-amber-300 font-bold uppercase tracking-wider text-[11px] underline underline-offset-4 transition-colors"
+          <Link
+            href="/delivery"
+            className="inline-flex items-center gap-1 text-[#f4a51c] hover:text-amber-300 font-bold uppercase tracking-wider text-[11px] underline underline-offset-4 transition-colors"
           >
-            Ver Sabores
+            Pedir Delivery Agora
             <ArrowRight className="w-3.5 h-3.5" />
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -442,22 +489,28 @@ export default function Home() {
             ))}
           </nav>
 
-          {/* Pesquisa, Redes e Botão Mobile */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="relative hidden md:block">
+          {/* Pesquisa, Delivery CTA, Redes e Botão Mobile */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="relative hidden xl:block">
               <input
                 type="text"
                 placeholder="Pesquisar..."
                 aria-label="Pesquisar"
-                className="pl-8 pr-3 py-1.5 text-xs rounded-full border border-zinc-300 bg-zinc-50/60 focus:bg-white focus:outline-none focus:border-[#3a7d44] w-32 xl:w-40 transition-all focus:w-44"
+                className="pl-8 pr-3 py-1.5 text-xs rounded-full border border-zinc-300 bg-zinc-50/60 focus:bg-white focus:outline-none focus:border-[#3a7d44] w-32 transition-all focus:w-40"
               />
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             </div>
 
-            <div className="hidden sm:flex items-center gap-2 text-zinc-400">
+            <Link
+              href="/delivery"
+              className="px-4 py-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-black uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-[#f4a51c]" />
+              <span>Delivery</span>
+            </Link>
+
+            <div className="hidden sm:flex items-center gap-1.5 text-zinc-400">
               <a href="#" aria-label="Facebook" className="p-1.5 rounded-full hover:bg-emerald-50 hover:text-[#3a7d44] transition-colors"><Facebook className="w-4 h-4" /></a>
-              <a href="#" aria-label="Twitter" className="p-1.5 rounded-full hover:bg-emerald-50 hover:text-[#3a7d44] transition-colors"><Twitter className="w-4 h-4" /></a>
-              <a href="#" aria-label="LinkedIn" className="p-1.5 rounded-full hover:bg-emerald-50 hover:text-[#3a7d44] transition-colors"><Linkedin className="w-4 h-4" /></a>
               <a href="#" aria-label="Instagram" className="p-1.5 rounded-full hover:bg-emerald-50 hover:text-[#3a7d44] transition-colors"><Instagram className="w-4 h-4" /></a>
             </div>
 
@@ -530,19 +583,20 @@ export default function Home() {
 
             {/* Botões de Ação Principais */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <a
-                href="#products"
+              <Link
+                href="/delivery"
                 className="px-6 py-3 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2.5 group"
               >
-                <span>Explorar Cardápio</span>
+                <Truck className="w-4 h-4 text-[#f4a51c]" />
+                <span>Pedir Delivery Online</span>
                 <ArrowRight className="w-4 h-4 text-[#f4a51c] group-hover:translate-x-0.5 transition-transform" />
-              </a>
+              </Link>
               <a
-                href="#where-to-buy"
+                href="#products"
                 className="px-6 py-3 bg-white hover:bg-zinc-50 text-[#1b4332] border border-[#1b4332]/20 hover:border-[#3a7d44] text-xs font-bold uppercase tracking-wider rounded-full transition-all shadow-xs inline-flex items-center gap-2"
               >
-                <MapPin className="w-3.5 h-3.5 text-[#3a7d44]" />
-                <span>Onde Encontrar</span>
+                <Utensils className="w-3.5 h-3.5 text-[#3a7d44]" />
+                <span>Ver Cardápio</span>
               </a>
             </div>
           </div>
@@ -895,15 +949,16 @@ export default function Home() {
 
               <div className="flex items-center justify-between pt-1">
                 <div>
-                  <span className="text-[10px] text-zinc-400 block">Preço sugerido na loja</span>
+                  <span className="text-[10px] text-zinc-400 block">Preço no Delivery</span>
                   <span className="text-xl font-black text-[#1b4332]">R$ 29,90</span>
                 </div>
-                <a
-                  href="#where-to-buy"
-                  className="px-5 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-colors shadow-xs"
+                <Link
+                  href="/delivery"
+                  className="px-5 py-2.5 bg-[#e08e24] hover:bg-[#c97d1b] text-white text-xs font-bold uppercase tracking-wider rounded-full transition-colors shadow-xs inline-flex items-center gap-2"
                 >
-                  Onde Encontrar
-                </a>
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Pedir no Delivery</span>
+                </Link>
               </div>
             </div>
           </div>
@@ -1104,15 +1159,30 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="pt-2.5 border-t border-zinc-200/80 flex items-center justify-between text-[10px] font-bold">
-                    <span className="inline-flex items-center gap-1 text-[#e08e24] bg-amber-50 px-2 py-0.5 rounded-full">
-                      <Flame className="w-3 h-3" />
-                      {product.calories}
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-[#3a7d44] bg-emerald-50 px-2 py-0.5 rounded-full">
-                      <Utensils className="w-3 h-3" />
-                      {product.protein}
-                    </span>
+                  <div className="pt-2.5 border-t border-zinc-200/80 space-y-2.5">
+                    <div className="flex items-center justify-between text-[10px] font-bold">
+                      <span className="inline-flex items-center gap-1 text-[#e08e24] bg-amber-50 px-2 py-0.5 rounded-full">
+                        <Flame className="w-3 h-3" />
+                        {product.calories}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[#3a7d44] bg-emerald-50 px-2 py-0.5 rounded-full">
+                        <Utensils className="w-3 h-3" />
+                        {product.protein}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-sm font-black text-[#1b4332]">
+                        {product.price}
+                      </span>
+                      <Link
+                        href="/delivery"
+                        className="px-3 py-1 bg-[#1b4332] hover:bg-[#2d6a4f] text-white text-[10px] font-bold uppercase tracking-wider rounded-full transition-colors inline-flex items-center gap-1"
+                      >
+                        <ShoppingBag className="w-3 h-3 text-[#f4a51c]" />
+                        <span>Pedir</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1139,6 +1209,29 @@ export default function Home() {
               </button>
             </div>
           )}
+          {/* Banner Ecossistema Completo de Delivery */}
+          <div className="mt-8 bg-gradient-to-r from-[#123826] via-[#1b4332] to-[#123826] rounded-2xl p-6 sm:p-8 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <span className="inline-flex items-center gap-1.5 bg-[#f4a51c] text-[#123826] text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full">
+                <Sparkles className="w-3.5 h-3.5" />
+                Plataforma Completa Sunneen Delivery
+              </span>
+              <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight">
+                Peça Online, Monte seu Bowl ou Acompanhe a Entrega a 3°C
+              </h3>
+              <p className="text-xs text-emerald-100/85 leading-relaxed">
+                Acesse nossa central completa com 8 visualizações integradas: Cardápio Digital, Construtor de Bowls com Macros ao Vivo, Checkout PIX/VR, Rastreamento GPS, Painel KDS da Cozinha, App do Entregador e Clube de Assinatura Semanal.
+              </p>
+            </div>
+            <Link
+              href="/delivery"
+              className="px-6 py-3.5 bg-[#f4a51c] hover:bg-[#e08e24] text-[#123826] text-xs font-black uppercase tracking-wider rounded-full transition-all shadow-md shrink-0 inline-flex items-center gap-2"
+            >
+              <Truck className="w-4 h-4" />
+              <span>Acessar Sistema de Delivery</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
